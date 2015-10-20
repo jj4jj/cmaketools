@@ -7,12 +7,19 @@ LIBS = [
         {
             'name':'demolib1',
             'subdir':'lib1',
-            'includes':['']
+			'type':'STATIC',
+            'includes':[''],
+            'linkpaths':[''],
+            'linklibs':['']
         },
         {
             'name':'demolib1',
             'subdir':'lib2',
-            'includes':['']
+			'type':'SHARED',
+            'includes':[''],
+            'linkpaths':[''],
+            'linklibs':[''],
+			'src_dirs':['base']
         }
 ]
 EXES = [
