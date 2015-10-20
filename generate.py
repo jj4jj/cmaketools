@@ -53,6 +53,14 @@ def generate(desc , path):
              '<add_subdirectory_area>': subdirs,
              '<project_version>': desc.VERSION})
 
+	""" todo
+	VERBOSE = 0
+	EXTRA_C_FLAGS = ''
+	EXTRA_LD_FLAGS = ''
+	EXTRA_SRCS	
+	"""
+
+
     for lib in desc.LIBS:
 
         subf=os.path.join(path,lib['subdir'],'CMakeLists.txt')
