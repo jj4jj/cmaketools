@@ -45,11 +45,14 @@ def generate(desc , path):
     subdirs = subdirs + '\n';
     if len(desc.EXES) > 0 :
         subdirs = subdirs + '\n'.join(map(lambda l:'add_subdirectory('+l['subdir']+')', desc.EXES))
-
     copy_replace_file(rootf, path+'/CMakeLists.txt',
             {'<definations>': definations,
              '<debug_mode>': desc.DEBUG,
              '<project_name>': desc.PROJECT,
+             '<extra_c_flags>': desc.EXTRA_C_FLAGS,
+             '<extra_cxx_flags>': desc.EXTRA_CXX_FLAGS,
+             '<verbose>': desc.VERBOSE,
+             '<extra_ld_flags>': desc.EXTRA_LD_FLAGS,
              '<add_subdirectory_area>': subdirs,
              '<project_version>': desc.VERSION})
 
