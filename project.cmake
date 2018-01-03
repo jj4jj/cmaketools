@@ -1,7 +1,7 @@
 #CMake projects genearte by cmaketools 
 
-project({{project_name}} CXX)
-set({{project_name}}_VERSION {{project_version}})
+project({{project}} CXX)
+set({{project_name}}_VERSION {{version}})
 
 #min version
 cmake_minimum_required(VERSION 2.6)
@@ -17,7 +17,7 @@ endif()
 #compile option
 option(DEBUG "Debug mode" 1)
 option(PCH "Use precompiled headers" 0)
-SET(DEBUG {{debug_mode}})
+SET(DEBUG {{debug}})
 
 {{definations}}
 SET( CMAKE_VERBOSE_MAKEFILE {{verbose}})
