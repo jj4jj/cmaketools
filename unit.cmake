@@ -55,12 +55,12 @@ add_library({{unit.name}} STATIC ${cur_srcs})
 {%-if obj.cmd%}
 {%-if obj.force%}
 add_custom_target({{obj.name}}
-	COMMAND {{obj.cmd}}
-	DEPENDS {{obj.dep}})
+    COMMAND {{obj.cmd}}
+    DEPENDS {{obj.dep}})
 {%-else%}
 add_custom_command(OUTPUT {{obj.out}}
-	COMMAND {{obj.cmd}}
-	DEPENDS {{obj.dep}})
+    COMMAND {{obj.cmd}}
+    DEPENDS {{obj.dep}})
 {%-endif%}
 {%-else%}
 
