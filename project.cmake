@@ -1,7 +1,7 @@
 #CMake projects genearte by cmaketools 
 
 project({{project}} CXX)
-set({{project_name}}_VERSION {{version}})
+set({{project}}_VERSION {{version}})
 
 #min version
 cmake_minimum_required(VERSION 2.6)
