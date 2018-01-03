@@ -33,6 +33,20 @@ endif()
 
 set(CMAKE_COMM_FLAGS "")
 
+{% for inc in incs %}
+include_directories({{inc}})
+{%endfor%}
+
+{% for co in cos %}
+add_compile_options("{{co}}")
+{%endfor%}
+
+{% for def in defs %}
+add_definitions(-D{{def}})
+{%endfor%}
+
+
+
 #debug common
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra {{extra_c_flags}} -rdynamic")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}  ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra {{extra_cxx_flags}} -rdynamic")
