@@ -35,7 +35,7 @@ def run(wdr, config):
     for unit in units:
         env['unit']=unit
         #print str(unit.get('objs',None))
-        render('/'.join((wdr, unit['subdir'], 'CMakeLists.txt')) ,uct,env, fmte)
+        render('/'.join((wdr, unit['subdir'], 'CMakeLists.txt')) ,uct,env)
     
 if __name__ == '__main__':
     wdr='.'
@@ -52,5 +52,5 @@ if __name__ == '__main__':
     autogen=wdr+'/'+'autobuild.sh'
     if not os.path.exists(autogen):
         at=Template(open(os.path.join(cdr,'autobuild.sh')).read(1024*1024))
-        render(autogen, at, {'autocmake_dir':cdr,"cmake_conf":os.path.join(wdr,mdf)},{})
+        render(autogen, at, {'autocmake_dir':cdr,"cmake_conf":os.path.join(wdr,mdf)})
 
