@@ -1,28 +1,28 @@
 {%-if unit.sdef%}
-set(cur_srcs "")
+set(UNIT_SRCS "")
 {%-else%}
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} cur_srcs)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} UNIT_SRCS)
 {%-endif%}
 ##extra dir srcs
 {%-for dsrc in unit.dsrcs%}
-aux_source_directory({%if dsrc[0] != '/' and dsrc[0] != '{'%}{{env.root}}/{%endif%}{{dsrc}} aux_cur_srcs)
-list(APPEND cur_srcs "${aux_cur_srcs}")
+aux_source_directory({%if dsrc[0] != '/' and dsrc[0] != '{'%}{{root}}/{%endif%}{{dsrc}} EXTRA_UNIT_SRCS)
+list(APPEND UNIT_SRCS "${EXTRA_UNIT_SRCS}")
 {%-endfor%}
 ##extra srcs
 {%-for src in unit.srcs%}
-list(APPEND cur_srcs "{%if src[0] != '/' and src[0] != '{'%}{{env.cdir}}/{%endif%}{{src}}")
+list(APPEND UNIT_SRCS "{%if src[0] != '/' and src[0] != '{'%}{{cdir}}/{%endif%}{{src}}")
 {%-endfor%}
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 {%-for inc in unit.incs%}
-{%if inc[0] != '/' and inc[0] != '{'%}{{env.root}}/{%endif%}{{inc}}
+{%if inc[0] != '/' and inc[0] != '{'%}{{root}}/{%endif%}{{inc}}
 {%-endfor%}
 /usr/local/include
 /usr/include)
 
 link_directories(
 {%-for linc in unit.lincs%}
-{%if linc[0] != '/' and linc[0] != '{'%}{{env.root}}/{%endif%}{{linc}}
+{%if linc[0] != '/' and linc[0] != '{'%}{{root}}/{%endif%}{{linc}}
 {%-endfor%}
 /usr/local/lib
 /usr/lib
@@ -30,7 +30,7 @@ link_directories(
 
 ##########################main objects###################################
 {%-if unit.type == 'exe'%}
-add_executable({{unit.name}} ${cur_srcs})
+add_executable({{unit.name}} ${UNIT_SRCS})
 {%-if unit.pic%}
 set_property(TARGET {{unit.name}} PROPERTY POSITION_INDEPENDENT_CODE ON)
 {%-else%}
@@ -41,14 +41,14 @@ target_link_libraries({{unit.name}}
 {{lib}}
 {%-endfor%})
 {%-elif unit.type == 'share'%}
-add_library({{unit.name}} SHARED ${cur_srcs})
+add_library({{unit.name}} SHARED ${UNIT_SRCS})
 {%-if not unit.pic%}
 set_property(TARGET {{uniq.name}} PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE OFF)
 {%-else%}
 set_property(TARGET {{uniq.name}} PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
 {%-endif%}
 {%-else%}
-add_library({{unit.name}} STATIC ${cur_srcs})
+add_library({{unit.name}} STATIC ${UNIT_SRCS})
 {%-endif%}
 
 {%-for obj in unit.objs%}
@@ -68,12 +68,12 @@ add_custom_command(OUTPUT {{obj.out}}
 set(sub_obj_srcs "")
 
 {%-for dsrc in obj.dsrcs%}
-aux_source_directory({%if dsrc[0] != '/' and dsrc[0] != '{'%}{{env.root}}/{%endif%}{{dsrc}} aux_sub_obj_srcs)
+aux_source_directory({%if dsrc[0] != '/' and dsrc[0] != '{'%}{{root}}/{%endif%}{{dsrc}} aux_sub_obj_srcs)
 list(APPEND sub_obj_srcs "${aux_sub_obj_srcs}")
 {%-endfor%}
 
 {%-for src in obj.srcs%}
-list(APPEND sub_obj_srcs "{%if src[0] != '/' and src[0] != '{'%}{{env.cdir}}/{%endif%}{{src}}")
+list(APPEND sub_obj_srcs "{%if src[0] != '/' and src[0] != '{'%}{{cdir}}/{%endif%}{{src}}")
 {%-endfor%}
 
 
