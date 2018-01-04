@@ -11,31 +11,26 @@ pct = Template(ptf.decode('utf8'))
 uctf=os.path.join(cdr,'unit.cmake')
 utf=open(uctf).read(1024*1024)
 uct = Template(utf.decode('utf8')) 
-def render(f,t,e,fe):
+def render(f,t,e):
     print 'render file:%s ...'%(f,)
-    open(f,'w').write(Template(Template(t.render(e)).render(fe)).render(e).encode('utf8'))
+    open(f,'w').write(Template(Template(t.render(e)).render(e)).render(e).encode('utf8'))
 
 def run(wdr, config):
     prjc='/'.join((wdr,'CMakeLists.txt'))
     keys=filter(lambda xk:xk[0:2] != '__', dir(config))
     env={}
-    fmte={}
-    benv={}
     ########################################
-    benv['cdir']='${CMAKE_CURRENT_SOURCE_DIR}'
-    benv['root']='${PROJECT_SOURCE_DIR}'
+    env['cdir']='${CMAKE_CURRENT_SOURCE_DIR}'
+    env['root']='${PROJECT_SOURCE_DIR}'
     #reserve
     for k in keys:
         if k != 'env':
             env[k]=getattr(config,k)
         else:
             fmte=getattr(config,k)
-            env['env']=fmte
-    #########################################
-    env.update(benv)
-    fmte.update(benv)
+            env.update(fmte)
     ##########################################
-    render(prjc, pct, env, fmte)
+    render(prjc, pct, env)
     units = getattr(config,'units',[])
     for unit in units:
         env['unit']=unit
