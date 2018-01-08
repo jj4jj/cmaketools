@@ -33,14 +33,22 @@ endif()
 
 set(CMAKE_COMM_FLAGS "")
 
+#common include
 {%-for inc in incs %}
 include_directories({{inc}})
 {%-endfor%}
 
+#common link include
+{%-for inc in links %}
+link_directories({{inc}})
+{%-endfor%}
+
+#common compile options
 {%-for co in cos %}
 add_compile_options("{{co}}")
 {%-endfor%}
 
+#common define
 {%-for def in defs %}
 add_definitions(-D{{def}})
 {%-endfor%}
@@ -62,17 +70,22 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # install dir
 set(CMAKE_INSTALL_PREFIX {{install_dir}})
 
-{%for unit in units%}add_subdirectory({{unit.subdir}})
-{%endfor%}
-
 {%for obj in objs%}
-{%if obj.force%}
+{%-if obj.force%}
 add_custom_target({{obj.name}}
     COMMAND {{obj.cmd}}
-    DEPENDS {{obj.dep}})
-{%else%}
+    DEPENDS {{obj.dep}}
+    SOURCES {{obj.srcs}})
+{%-else%}
 add_custom_command(OUTPUT {{obj.out}}
     COMMAND {{obj.cmd}}
     DEPENDS {{obj.dep}})
 {%endif%}
 {%endfor%}
+
+#sub units
+{%for unit in units%}
+add_subdirectory({{unit.subdir}})
+{%-endfor%}
+
+
