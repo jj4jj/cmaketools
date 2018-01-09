@@ -24,7 +24,7 @@ SET( CMAKE_VERBOSE_MAKEFILE {{verbose}})
 
 if(DEBUG)
     set(CMAKE_BUILD_TYPE Debug)
-    add_definitions(-DDEBUG)
+    add_definitions(-D_DEBUG_)
     message("Build in debug-mode : Yes (default)")
 else()
     set(CMAKE_BUILD_TYPE Release)
@@ -32,6 +32,28 @@ else()
 endif()
 
 set(CMAKE_COMM_FLAGS "")
+
+#common compile options
+{%-for co in cos %}
+add_compile_options("{{co}}")
+{%-endfor%}
+{%-if debug%}
+add_compile_options("-g3")
+add_compile_options("-ggdb")
+add_compile_options("-Wall")
+add_compile_options("-Wfatal-errors")
+add_compile_options("-Wextra")
+{%-else%}
+add_compile_options("-g2")
+add_compile_options("-ggdb")
+add_compile_options("-Wall")
+{%-endif%}
+add_compile_options("-rdynamic")
+
+#common define
+{%-for def in defs %}
+add_definitions(-D{{def}})
+{%-endfor%}
 
 #common include
 {%-for inc in incs %}
@@ -43,24 +65,18 @@ include_directories({{inc}})
 link_directories({{inc}})
 {%-endfor%}
 
-#common compile options
-{%-for co in cos %}
-add_compile_options("{{co}}")
+#common link libs
+{%-for lib in libs %}
+link_libraries({{lib}})
 {%-endfor%}
-
-#common define
-{%-for def in defs %}
-add_definitions(-D{{def}})
-{%-endfor%}
-
 
 #debug common
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra {{extra_c_flags}} -rdynamic")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}  ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra {{extra_cxx_flags}} -rdynamic")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CMAKE_COMM_FLAGS} {{extra_c_flags}} ")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}  ${CMAKE_COMM_FLAGS} {{extra_cxx_flags}} ")
 
 # release mode
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} -g -O2 {{extra_c_flags}} -rdynamic")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} -g -O2 {{extra_cxx_flags}} -rdynamic")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} {{extra_c_flags}} ")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} {{extra_cxx_flags}} ")
 
 # output dir
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

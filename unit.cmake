@@ -20,6 +20,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 {%-for inc in unit.incs%}
 {%if inc[0] != '/' and inc[0] != '{'%}{{root}}/{%endif%}{{inc}}
 {%-endfor%}
+{%-for inc in unit.dsrcs%}
+{%if inc[0] != '/' and inc[0] != '{'%}{{root}}/{%endif%}{{inc}}
+{%-endfor%}
 )
 
 #link lib dir
@@ -30,7 +33,7 @@ link_directories(
 )
 
 #custom command
-{%-for obj in unit.objs%}
+{%for obj in unit.objs%}
 {%-if obj.cmd%}
 {%-if obj.force%}
 add_custom_command({{unit.name}}
@@ -43,7 +46,7 @@ add_custom_command(OUTPUT {{obj.out}}
     DEPENDS {{obj.dep}})
 {%-if obj.build%}
 list(APPEND unit_srcs {{obj.out}})
-{%-endif%}
+{%endif%}
 {%-endif%}
 {%-endif%}
 {%-endfor%}
